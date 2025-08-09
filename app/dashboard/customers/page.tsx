@@ -1,48 +1,28 @@
-import { fetchCustomersPages } from '@/app/lib/data';
-import Table from '@/app/ui/customers/table';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
-import Pagination from '@/app/ui/invoices/pagination';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
-import { Metadata } from 'next';
+import Table from '@/app/ui/customers/table';
 import { Suspense } from 'react';
-
-export const metadata: Metadata = {
-  title: 'Customers',
-};
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: {
+  searchParams?: Promise<{
     query?: string;
     page?: string;
-  };
+  }>;
 }) {
-  // Langkah 1: Ambil 'query' terlebih dahulu. Ini tidak masalah.
-  const query = searchParams?.query || '';
-
-  // Langkah 2: SEGERA lakukan panggilan 'await'. INI ADALAH KUNCINYA.
-  // Kita "memuaskan" aturan Next.js dengan melakukan operasi asinkron.
-  const totalPages = await fetchCustomersPages(query);
-
-  // Langkah 3: SETELAH 'await' selesai, baru kita aman untuk membaca properti lain.
-  const currentPage = Number(searchParams?.page) || 1;
+  const { query = '' } = await searchParams ?? {};
 
   return (
     <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Customers</h1>
-      </div>
-      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Search customers..." />
-      </div>
-      <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        <Table query={query} currentPage={currentPage} />
+      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
+        Customers
+      </h1>
+      <Search placeholder="Search customers..." />
+      <Suspense key={query} fallback={<InvoicesTableSkeleton />}>
+        <Table query={query} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
     </div>
   );
 }
