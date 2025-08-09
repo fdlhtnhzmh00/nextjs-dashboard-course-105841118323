@@ -19,7 +19,22 @@ export async function fetchRevenue() {
     // console.log('Fetching revenue data...');
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const data = await sql<Revenue[]>`SELECT * FROM revenue`;
+    const data = await sql<Revenue[]>`
+  SELECT * FROM revenue ORDER BY CASE
+    WHEN month = 'Jan' THEN 1
+    WHEN month = 'Feb' THEN 2
+    WHEN month = 'Mar' THEN 3
+    WHEN month = 'Apr' THEN 4
+    WHEN month = 'May' THEN 5
+    WHEN month = 'Jun' THEN 6
+    WHEN month = 'Jul' THEN 7
+    WHEN month = 'Aug' THEN 8
+    WHEN month = 'Sep' THEN 9
+    WHEN month = 'Oct' THEN 10
+    WHEN month = 'Nov' THEN 11
+    WHEN month = 'Dec' THEN 12
+  END ASC
+`;
 
     // console.log('Data fetch completed after 3 seconds.');
 
