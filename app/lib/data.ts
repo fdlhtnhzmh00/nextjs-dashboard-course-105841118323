@@ -238,3 +238,21 @@ export async function fetchFilteredCustomers(
     throw new Error('Failed to fetch customer table.');
   }
 }
+
+export async function fetchCustomersPages(query: string) {
+  try {
+    const count = await sql`
+      SELECT COUNT(*)
+      FROM customers
+      WHERE
+        customers.name ILIKE ${`%${query}%`} OR
+        customers.email ILIKE ${`%${query}%`}
+    `;
+
+    const totalPages = Math.ceil(Number(count[0].count) / 6); // Asumsikan 6 item per halaman
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of customers.');
+  }
+}
