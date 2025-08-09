@@ -12,7 +12,8 @@ export default async function Page({
     page?: string;
   }>;
 }) {
-  const { query = '' } = await searchParams ?? {};
+  const params = await searchParams;
+  const query = params?.query ?? '';
 
   return (
     <div className="w-full">
