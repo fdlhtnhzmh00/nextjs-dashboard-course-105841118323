@@ -18,6 +18,7 @@ export default async function InvoicesTable({
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+          {/* Mobile View */}
           <div className="md:hidden">
             {invoices?.map((invoice: InvoicesTable) => (
               <div
@@ -26,6 +27,8 @@ export default async function InvoicesTable({
               >
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
+                    {/* ID ditambahkan di sini untuk mobile */}
+                    <p className="text-sm text-gray-500">#{invoice.id.substring(0, 8)}</p>
                     <div className="mb-2 flex items-center">
                       <Image
                         src={invoice.image_url}
@@ -55,9 +58,14 @@ export default async function InvoicesTable({
               </div>
             ))}
           </div>
+          {/* Desktop View */}
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
+                {/* Header tabel '#' ditambahkan */}
+                <th scope="col" className="px-3 py-5 font-medium">
+                  #
+                </th>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                   Customer
                 </th>
@@ -84,6 +92,10 @@ export default async function InvoicesTable({
                   key={invoice.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
+                  {/* Kolom data ID ditambahkan */}
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {invoice.id.substring(0, 8)}...
+                  </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
                       <Image
