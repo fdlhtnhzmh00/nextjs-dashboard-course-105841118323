@@ -212,6 +212,11 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
+    if (!sql) {
+      console.warn('Database not available, using mock customer data');
+      return MOCK_CUSTOMERS;
+    }
+
     const data = await sql<CustomerField[]>`
       SELECT
         id,
@@ -220,12 +225,12 @@ export async function fetchCustomers() {
       ORDER BY name ASC
     `;
 
-    // Perbaikan ada di baris ini: tambahkan tipe data untuk 'customer'
     const customers = data.map((customer: CustomerField) => ({...customer}));
     return customers;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
+    console.warn('Falling back to mock customer data');
+    return MOCK_CUSTOMERS;
   }
 }
 
