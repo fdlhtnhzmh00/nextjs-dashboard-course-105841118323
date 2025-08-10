@@ -212,7 +212,7 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    const customers = await sql<CustomerField[]>`
+    const data = await sql<CustomerField[]>`
       SELECT
         id,
         name
@@ -220,6 +220,8 @@ export async function fetchCustomers() {
       ORDER BY name ASC
     `;
 
+    // Perbaikan ada di baris ini: tambahkan tipe data untuk 'customer'
+    const customers = data.map((customer: CustomerField) => ({...customer}));
     return customers;
   } catch (err) {
     console.error('Database Error:', err);
@@ -247,7 +249,8 @@ export async function fetchFilteredCustomers(query: string) {
       ORDER BY customers.name ASC
     `;
 
-    const customers = data.map((customer: { total_pending: number; total_paid: number; }) => ({
+    // Perbaikan di sini: tambahkan tipe data untuk parameter 'customer'
+    const customers = data.rows.map((customer: CustomersTableType) => ({
       ...customer,
       total_pending: formatCurrency(customer.total_pending),
       total_paid: formatCurrency(customer.total_paid),
