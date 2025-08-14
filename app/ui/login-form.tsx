@@ -8,12 +8,11 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
-import { useActionState } from 'react'; // Perubahan 1: import diubah
+import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/lib/actions';
 
 export default function LoginForm() {
-  // Perubahan 2: Nama hook diubah
   const [errorMessage, dispatch] = useActionState(authenticate, undefined);
 
   return (
@@ -24,11 +23,12 @@ export default function LoginForm() {
         </h1>
         <div className="w-full">
           <div>
+            {/* Perubahan di sini */}
             <label
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
               htmlFor="email"
             >
-              Email
+              Email <span className="font-normal text-gray-500">(user@nextmail.com)</span>
             </label>
             <div className="relative">
               <input
@@ -43,11 +43,12 @@ export default function LoginForm() {
             </div>
           </div>
           <div className="mt-4">
+            {/* Perubahan di sini */}
             <label
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
               htmlFor="password"
             >
-              Password
+              Password <span className="font-normal text-gray-500">(123456)</span>
             </label>
             <div className="relative">
               <input
